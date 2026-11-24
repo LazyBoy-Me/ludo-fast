@@ -1,4 +1,4 @@
-# ludofast.edge
+# lazyludo
 
 Download landing page for **Ludo King 10.6.0.416** — a tiny Next.js app deployed on Vercel that
 serves a fast, resumable, ad-free download from an edge/release CDN.

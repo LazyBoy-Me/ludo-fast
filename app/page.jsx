@@ -34,7 +34,7 @@ export default function Page() {
       <header className="top">
         <div className="brand">
           <span className="mark">LF</span>
-          <span className="brand-text">ludofast<em>.edge</em></span>
+          <span className="brand-text">lazyludo<em>.vercel.app</em></span>
         </div>
         <LiveBadge />
       </header>

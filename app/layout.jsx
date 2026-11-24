@@ -1,10 +1,10 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Ludo King 10.6.0.416 — Fast Download',
+  title: 'lazyludo · Ludo King 10.6.0.416 — Fast Download',
   description: 'Direct, resumable download of Ludo King 10.6.0.416. Served from an edge CDN. No queues, no ad gates.',
   openGraph: {
-    title: 'Ludo King 10.6.0.416 — Fast Download',
+    title: 'lazyludo · Ludo King 10.6.0.416 — Fast Download',
     description: 'Direct edge-CDN download. Resume supported.',
     type: 'website',
   },
