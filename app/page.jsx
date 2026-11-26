@@ -1,26 +1,40 @@
 import { FILE } from '../lib/file';
 import { DownloadButton, CopyChip, MirrorCards, LiveBadge } from './ui';
 
-const steps = [
-  ['Tap download', 'The transfer starts straight from the edge node. If your browser asks "keep file?", say yes — big files trigger that.'],
-  ['Unzip', 'Archive → Ludo King_10.6.0.416.apk. Password on the archive, if any, was set when it was packed.'],
-  ['Allow install', 'Settings → Apps → Special access → Install unknown apps → pick your browser or file manager.'],
-  ['Open and play', 'Tap the APK, install, done. No Play Store round trip, no update nag.'],
+const changes = [
+  {
+    tag: 'tcp',
+    title: 'boardState rides the STATUS reply',
+    body: 'The TCP STATUS answer now appends boardState=<pawns>. The pipe separator is swapped for a semicolon so the controller parser accepts it.',
+  },
+  {
+    tag: 'cloud',
+    title: 'status.json carries the same field',
+    body: 'Cloud sync writes "boardState" into status.json too. Remote, hotspot and cloud modes now get pawn positions, not just dice and turn.',
+  },
+  {
+    tag: 'ctrl',
+    title: 'Controller untouched',
+    body: 'It already knew how to read both channels. No controller update, no PIN change, no pairing dance.',
+  },
 ];
 
-const speed = [
-  ['5 GHz Wi-Fi', '2.4 GHz caps around 8–10 MB/s even on good routers. Switch bands and watch it double.'],
-  ['Wired / hotspot USB', 'Phone-to-PC tether over USB beats Wi-Fi for one big pull. ADB pull or just a cable transfer.'],
-  ['Download manager', 'ADM or 1DM opens 8 parallel connections. GitHub and edge nodes both allow range requests, so this stacks.'],
-  ['Skip the browser throttle', 'Chrome sometimes limps on 100 MB+ files. The same URL in a download manager runs flat out.'],
-  ['Off-peak', 'Local ISP congestion after 8 PM is real. 3 AM pulls are routinely 2–3× faster.'],
+const steps = [
+  [
+    'Uninstall the old mod',
+    'This build is signed with a different key, so Android refuses to update over the installed game. Uninstalling clears local settings — if you log in with an account, log in again after.',
+  ],
+  ['Install the APK', 'Tap the file, allow install from this source. 252.1 MB, no split bundles, no obb.'],
+  ['Set the game up as before', 'Open it, server ON, same controller PIN and pairing. Nothing about the game flow changed.'],
+  ['Connect by Remote / Hotspot / Cloud', 'Any mode. Same-device mode was never broken.'],
+  ['Roll once and look at the board', 'After every roll and turn the guti positions should land on the controller board in all three modes.'],
 ];
 
 const faq = [
-  ['Is the download resumable?', 'Yes. Both mirrors answer HTTP range requests, so a dropped transfer picks up exactly where it stopped.'],
-  ['Why a ZIP instead of a bare APK?', 'The archive is the exact artifact that was packed and hashed. Serving it byte-for-byte means the SHA-256 below always matches.'],
-  ['Checksum mismatch?', 'Re-download with the other mirror. A mismatch means a truncated or proxied transfer, not a bad build.'],
-  ['Does it need extra permissions?', 'Install permission only, the one Android asks for when you sideload anything.'],
+  ['Will it install over my current Ludo King mod?', 'No. Different signing key. Uninstall first, then install this APK.'],
+  ['The game closes by itself after install — what now?', 'Roll back: reinstall the previous build from the mirror list, or the original APK from your own backup folder.'],
+  ['Is the download resumable?', 'Yes. The CDN answers range requests, so a dropped transfer picks up where it stopped.'],
+  ['Checksum mismatch?', 'Re-download. A mismatch is a truncated transfer, not a bad build.'],
 ];
 
 export default function Page() {
@@ -34,7 +48,9 @@ export default function Page() {
       <header className="top">
         <div className="brand">
           <span className="mark">LF</span>
-          <span className="brand-text">lazyludo<em>.vercel.app</em></span>
+          <span className="brand-text">
+            lazyludo<em>.vercel.app</em>
+          </span>
         </div>
         <LiveBadge />
       </header>
@@ -42,27 +58,28 @@ export default function Page() {
       <section className="hero">
         <div className="badge">
           <span className="spark" />
-          build {FILE.version} · verified {FILE.build}
+          build {FILE.version} · pawn live fix · {FILE.build}
         </div>
 
         <h1>
           {FILE.game}
-          <span className="line2">downloaded at full line rate.</span>
+          <span className="line2">the pawn fix, one tap away.</span>
         </h1>
 
         <p className="lede">
-          One file. One tap. Served from an anycast edge with range requests enabled — so it
-          resumes instead of restarting, and it does not care how far you are from a datacenter.
+          Modded {FILE.version} where the guti positions finally leave the phone. Board state now
+          travels over the TCP STATUS reply and cloud status.json — so Remote, Hotspot and Cloud
+          Sync boards stop showing an empty yard.
         </p>
 
-        <DownloadButton label="Download Ludo King" />
+        <DownloadButton label="Download pawnfix APK" />
 
         <div className="under-cta">
           <CopyChip value={FILE.sha256} short={`sha256 ${shortSha}`} />
           <span className="sep" />
           <span className="mono">{FILE.size} on the wire</span>
           <span className="sep" />
-          <span className="mono">{FILE.uncompressed} unpacked</span>
+          <span className="mono">{FILE.kind} · direct install</span>
         </div>
       </section>
 
@@ -73,21 +90,40 @@ export default function Page() {
         </div>
         <div>
           <span>format</span>
-          <strong>ZIP → APK</strong>
+          <strong>{FILE.kind}</strong>
         </div>
         <div>
           <span>version</span>
           <strong>{FILE.version}</strong>
         </div>
         <div>
-          <span>resume</span>
-          <strong>enabled</strong>
+          <span>signature</span>
+          <strong>new key</strong>
+        </div>
+      </section>
+
+      <section className="callout">
+        <strong>Uninstall the old mod first.</strong> Different signing key — Android will reject the
+        install otherwise. Local settings go with it.
+      </section>
+
+      <section className="block">
+        <h2>What changed</h2>
+        <p className="sub">Game APK only. Controller untouched.</p>
+        <div className="changes">
+          {changes.map((c) => (
+            <article key={c.tag}>
+              <code>{c.tag}</code>
+              <strong>{c.title}</strong>
+              <p>{c.body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
       <section className="block">
         <h2>Mirrors</h2>
-        <p className="sub">Both serve identical bytes. The first one usually wins on latency.</p>
+        <p className="sub">Current build up top, the previous release underneath.</p>
         <MirrorCards />
       </section>
 
@@ -104,19 +140,6 @@ export default function Page() {
             </li>
           ))}
         </ol>
-      </section>
-
-      <section className="block">
-        <h2>Squeeze the pipe</h2>
-        <p className="sub">Same file, faster wire. Ranked by how much it actually gains.</p>
-        <ul className="speed">
-          {speed.map(([title, body]) => (
-            <li key={title}>
-              <strong>{title}</strong>
-              <p>{body}</p>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section className="block">
@@ -141,7 +164,7 @@ export default function Page() {
           <span>{FILE.version}</span>
         </div>
         <p className="credit">
-          Unofficial mirror. {FILE.game} and its assets belong to their publisher. Page runs on
+          Unofficial mod build. {FILE.game} and its assets belong to their publisher. Page runs on
           Vercel, bytes ride the release CDN.
         </p>
       </footer>

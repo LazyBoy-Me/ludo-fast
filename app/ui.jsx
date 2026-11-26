@@ -3,17 +3,8 @@
 import { useEffect, useState } from 'react';
 import { FILE } from '../lib/file';
 
-function useAndroid() {
-  const [android, setAndroid] = useState(false);
-  useEffect(() => {
-    setAndroid(/Android/i.test(navigator.userAgent));
-  }, []);
-  return android;
-}
-
 export function DownloadButton({ mirror = 'edge', label }) {
   const [state, setState] = useState('idle');
-  const android = useAndroid();
 
   function go() {
     if (state !== 'idle') return;
@@ -29,8 +20,7 @@ export function DownloadButton({ mirror = 'edge', label }) {
         {state === 'idle' ? label || 'Download now' : 'Starting transfer…'}
       </span>
       <span className="dl-meta">
-        {android ? 'APK · ' : 'ZIP · '}
-        {FILE.size} · resume ok
+        {FILE.kind} · {FILE.size} · resume ok
       </span>
       <span className="dl-arrow" aria-hidden="true">
         ↓
@@ -75,7 +65,7 @@ export function MirrorCards() {
             <strong>{m.name}</strong>
             <em>{m.note}</em>
           </div>
-          <p>{i === 0 ? 'Anycast edge, nearest node wins.' : 'Global CDN, long-lived cache.'}</p>
+          <p>{i === 0 ? `${m.meta} — anycast edge, nearest node wins.` : `${m.meta} — the build before the pawn fix.`}</p>
           <a href={`/api/dl?m=${m.id}`} className="mirror-link">
             pull file <span aria-hidden="true">↗</span>
           </a>

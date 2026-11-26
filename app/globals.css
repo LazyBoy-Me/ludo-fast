@@ -389,6 +389,65 @@ h1 .line2 {
   letter-spacing: -0.01em;
 }
 
+/* callout + change cards */
+
+.callout {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 207, 74, 0.28);
+  background: linear-gradient(120deg, rgba(255, 207, 74, 0.1), rgba(255, 77, 109, 0.06) 70%, transparent);
+  color: #e8e2cf;
+  font-size: 13.8px;
+  line-height: 1.6;
+}
+
+.callout strong {
+  color: var(--yellow);
+  font-weight: 650;
+}
+
+.changes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.changes article {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.07), rgba(255, 255, 255, 0.008));
+}
+
+.changes code {
+  display: inline-block;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid rgba(53, 224, 208, 0.3);
+  border-radius: 999px;
+  padding: 5px 9px;
+  margin-bottom: 14px;
+}
+
+.changes strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.changes p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 13.3px;
+  line-height: 1.6;
+}
+
 /* ---------- blocks ---------- */
 
 .block {
@@ -650,6 +709,7 @@ footer {
   .hero { padding: 40px 0 22px; }
   .stats { grid-template-columns: repeat(2, 1fr); margin-top: 34px; }
   .mirrors, .speed { grid-template-columns: 1fr; }
+  .changes { grid-template-columns: 1fr; }
   h1 { max-width: 12ch; }
   h1 .line2 { font-size: 0.46em; margin-top: 12px; }
   .dl { width: 100%; padding: 18px 66px 18px 20px; }

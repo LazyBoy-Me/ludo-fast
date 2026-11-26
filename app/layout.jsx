@@ -1,11 +1,12 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'lazyludo · Ludo King 10.6.0.416 — Fast Download',
-  description: 'Direct, resumable download of Ludo King 10.6.0.416. Served from an edge CDN. No queues, no ad gates.',
+  title: 'lazyludo · Ludo King 10.6.0.416 — Pawn Live Fix',
+  description:
+    'Modded Ludo King 10.6.0.416 with pawn (guti) positions sent over TCP STATUS and cloud status.json. Direct, resumable APK download.',
   openGraph: {
-    title: 'lazyludo · Ludo King 10.6.0.416 — Fast Download',
-    description: 'Direct edge-CDN download. Resume supported.',
+    title: 'lazyludo · Ludo King 10.6.0.416 — Pawn Live Fix',
+    description: 'Pawn live fix APK. Direct edge-CDN download, resume supported.',
     type: 'website',
   },
 };
